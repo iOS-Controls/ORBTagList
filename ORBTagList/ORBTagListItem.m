@@ -58,7 +58,11 @@
 
 #pragma mark - View setup
 
-- (void)constructView {
+- (void)constructViewWithMaximumWidth:(NSNumber *)maxAllowedWidth {
+    for (UIView *subview in self.subviews) {
+        [subview removeFromSuperview];
+    }
+    
     self.tagLabel = [[UILabel alloc] init];
     self.tagLabel.font = self.tagFont;
     self.tagLabel.text = self.tagName;
@@ -72,20 +76,28 @@
     
     CGFloat estimatedTagViewWidth = (self.horizontalPadding * 2) + trueLabelWidth;
     
+    CGFloat tagAccessoryWidth = 0;
     switch (self.accessoryView) {
         case ORBTagListItemAccessoryViewRemoveItem:
-            estimatedTagViewWidth += (self.bounds.size.height - kORBTagListItemDefaultAccessoryViewPadding * 2) + (kORBTagListItemDefaultAccessoryViewPadding * 2);
+            tagAccessoryWidth = (self.bounds.size.height - kORBTagListItemDefaultAccessoryViewPadding * 2) + (kORBTagListItemDefaultAccessoryViewPadding * 2);
             break;
             
         case ORBTagListItemAccessoryViewCustom: {
             NSAssert(self.customAccessoryView, @"Warning: %@ needs customAccessoryView to be set when in ORBTagListItemAccessoryViewCustom mode", NSStringFromClass([self class]));
             
-            estimatedTagViewWidth += self.customAccessoryView.bounds.size.width + (self.customAccessoryViewPadding * 2);
+            tagAccessoryWidth = self.customAccessoryView.bounds.size.width + (self.customAccessoryViewPadding * 2);
             break;
         }
             
         default:
             break;
+    }
+    
+    estimatedTagViewWidth += tagAccessoryWidth;
+    
+    if (estimatedTagViewWidth > [maxAllowedWidth doubleValue]) {
+        estimatedTagViewWidth = [maxAllowedWidth doubleValue];
+        trueLabelWidth = estimatedTagViewWidth - tagAccessoryWidth;
     }
     
     self.frame = CGRectMake(0, 0,

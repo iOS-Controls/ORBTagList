@@ -30,6 +30,14 @@
     [self reloadData];
 }
 
+- (void)setFrame:(CGRect)frame {
+    [super setFrame:frame];
+    
+    if (self.superview && self.dataSource && self.delegate) {
+        [self reloadData];
+    }
+}
+
 #pragma mark - Data Control
 
 - (void)reloadData {
@@ -86,7 +94,8 @@
     for (ORBTagListItem *item in self.tagItems) {
         item.frame = CGRectMake(0, 0,
                                 1, tagHeight);
-        [item performSelector:@selector(constructView)];
+        [item performSelector:@selector(constructViewWithMaximumWidth:)
+                   withObject:@(self.dataContainer.bounds.size.width)];
         
         CGFloat spaceToTrailingMargin = self.dataContainer.bounds.size.width - curX;
         
