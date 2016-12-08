@@ -17,6 +17,8 @@
 		FF8EF2591DF87E320028CDF5 /* ORBTagList.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8EF2581DF87E320028CDF5 /* ORBTagList.m */; };
 		FF8EF25C1DF883000028CDF5 /* ORBTagListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8EF25B1DF883000028CDF5 /* ORBTagListItem.m */; };
 		FF8EF2641DF9A1E60028CDF5 /* cross.png in Resources */ = {isa = PBXBuildFile; fileRef = FF8EF2631DF9A1E60028CDF5 /* cross.png */; };
+		FF8EF2681DF9E4750028CDF5 /* checkbox_off.png in Resources */ = {isa = PBXBuildFile; fileRef = FF8EF2661DF9E4750028CDF5 /* checkbox_off.png */; };
+		FF8EF2691DF9E4750028CDF5 /* checkbox_on.png in Resources */ = {isa = PBXBuildFile; fileRef = FF8EF2671DF9E4750028CDF5 /* checkbox_on.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +50,9 @@
 		FF8EF25A1DF883000028CDF5 /* ORBTagListItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ORBTagListItem.h; sourceTree = "<group>"; };
 		FF8EF25B1DF883000028CDF5 /* ORBTagListItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ORBTagListItem.m; sourceTree = "<group>"; };
 		FF8EF2631DF9A1E60028CDF5 /* cross.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cross.png; sourceTree = "<group>"; };
+		FF8EF2661DF9E4750028CDF5 /* checkbox_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkbox_off.png; sourceTree = "<group>"; };
+		FF8EF2671DF9E4750028CDF5 /* checkbox_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkbox_on.png; sourceTree = "<group>"; };
+		FF8EF26D1DF9F38C0028CDF5 /* ORBTagListPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORBTagListPrivate.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +95,7 @@
 		FF8EF2301DF87DE90028CDF5 /* ORBTagListDemo */ = {
 			isa = PBXGroup;
 			children = (
+				FF8EF2651DF9E4750028CDF5 /* Resources */,
 				FF8EF2341DF87DE90028CDF5 /* AppDelegate.h */,
 				FF8EF2351DF87DE90028CDF5 /* AppDelegate.m */,
 				FF8EF2371DF87DE90028CDF5 /* ViewController.h */,
@@ -128,6 +134,7 @@
 				FF8EF2581DF87E320028CDF5 /* ORBTagList.m */,
 				FF8EF25A1DF883000028CDF5 /* ORBTagListItem.h */,
 				FF8EF25B1DF883000028CDF5 /* ORBTagListItem.m */,
+				FF8EF26D1DF9F38C0028CDF5 /* ORBTagListPrivate.h */,
 			);
 			name = ORBTagList;
 			path = ../ORBTagList;
@@ -140,6 +147,15 @@
 			);
 			path = Resources;
 			sourceTree = "<group>";
+		};
+		FF8EF2651DF9E4750028CDF5 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				FF8EF2661DF9E4750028CDF5 /* checkbox_off.png */,
+				FF8EF2671DF9E4750028CDF5 /* checkbox_on.png */,
+			);
+			path = Resources;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -226,8 +242,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				FF8EF2411DF87DE90028CDF5 /* LaunchScreen.storyboard in Resources */,
+				FF8EF2691DF9E4750028CDF5 /* checkbox_on.png in Resources */,
 				FF8EF23E1DF87DE90028CDF5 /* Assets.xcassets in Resources */,
 				FF8EF2641DF9A1E60028CDF5 /* cross.png in Resources */,
+				FF8EF2681DF9E4750028CDF5 /* checkbox_off.png in Resources */,
 				FF8EF23C1DF87DE90028CDF5 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

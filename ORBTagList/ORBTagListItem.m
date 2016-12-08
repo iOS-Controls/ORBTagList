@@ -7,6 +7,7 @@
 //
 
 #import "ORBTagListItem.h"
+#import "ORBTagListPrivate.h"
 
 #define kORBTagListItemDefaultHeight 30.0f
 #define kORBTagListItemDefaultHorizontalPadding 5.0f
@@ -56,6 +57,10 @@
     [super willMoveToSuperview:newSuperview];
 }
 
+- (void)didMoveToSuperview {
+    [super didMoveToSuperview];
+}
+
 #pragma mark - View setup
 
 - (void)constructViewWithMaximumWidth:(NSNumber *)maxAllowedWidth {
@@ -74,8 +79,6 @@
                             attributes:@{ NSFontAttributeName:self.tagLabel.font }
                             context:nil].size.width;
     
-    CGFloat estimatedTagViewWidth = (self.horizontalPadding * 2) + trueLabelWidth;
-    
     CGFloat tagAccessoryWidth = 0;
     switch (self.accessoryView) {
         case ORBTagListItemAccessoryViewRemoveItem:
@@ -93,11 +96,12 @@
             break;
     }
     
-    estimatedTagViewWidth += tagAccessoryWidth;
+    CGFloat tagAccessoryAndPaddingsWidth = (self.horizontalPadding * 2) + tagAccessoryWidth;
+    CGFloat estimatedTagViewWidth = tagAccessoryAndPaddingsWidth + trueLabelWidth;
     
     if (estimatedTagViewWidth > [maxAllowedWidth doubleValue]) {
         estimatedTagViewWidth = [maxAllowedWidth doubleValue];
-        trueLabelWidth = estimatedTagViewWidth - tagAccessoryWidth;
+        trueLabelWidth = estimatedTagViewWidth - tagAccessoryAndPaddingsWidth;
     }
     
     self.frame = CGRectMake(0, 0,
@@ -156,11 +160,15 @@
 #pragma mark - Button events
 
 - (void)tagButtonTapped:(UIButton *)button {
-    
+    if ([self.privateDelegate respondsToSelector:@selector(tagListItemTapped:)]) {
+        [self.privateDelegate tagListItemTapped:self];
+    }
 }
 
 - (void)accessoryButtonTapped:(UIButton *)button {
-    
+    if ([self.privateDelegate respondsToSelector:@selector(tagListAccessoryButtonTapped:)]) {
+        [self.privateDelegate tagListAccessoryButtonTapped:self];
+    }
 }
 
 #pragma mark - Custom Accessors

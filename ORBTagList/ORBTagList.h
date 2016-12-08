@@ -9,25 +9,27 @@
 #import <UIKit/UIKit.h>
 #import "ORBTagListItem.h"
 
+@class ORBTagList;
+
 @protocol ORBTagListDataSource <NSObject>
 
 @required
-- (NSUInteger)numberOfItemsInTagList;
-- (ORBTagListItem *)tagItemAtIndex:(NSUInteger)tagItemIndex;
+- (NSUInteger)numberOfItemsInTagList:(ORBTagList *)tagList;
+- (ORBTagListItem *)tagList:(ORBTagList *)tagList tagItemAtIndex:(NSUInteger)tagItemIndex;
 
 @optional
-- (CGFloat)heightForAllItemsInTagList;
-- (CGFloat)horizontalSpaceBetweenItemsInTagList;
-- (CGFloat)verticalSpaceBetweenItemsInTagList;
+- (CGFloat)heightForAllItemsInTagList:(ORBTagList *)tagList;
+- (CGFloat)horizontalSpaceBetweenItemsInTagList:(ORBTagList *)tagList;
+- (CGFloat)verticalSpaceBetweenItemsInTagList:(ORBTagList *)tagList;
 
 @end
 
 @protocol ORBTagListDelegate <NSObject>
 
 @optional
-- (void)tagListItemTappedAtIndex:(NSUInteger)tagItemIndex;
-- (void)tagListItemAccessoryButtonTappedAtIndex:(NSUInteger)tagItemIndex;
-- (BOOL)shouldRemoveTagListItemAtIndex:(NSUInteger)tagItemIndex;
+- (void)tagList:(ORBTagList *)tagList itemTappedAtIndex:(NSUInteger)tagItemIndex;
+- (void)tagList:(ORBTagList *)tagList itemAccessoryButtonTappedAtIndex:(NSUInteger)tagItemIndex;
+- (void)tagList:(ORBTagList *)tagList requestedTagListItemRemovalAtIndex:(NSUInteger)tagItemIndex;
 
 @end
 
@@ -45,6 +47,7 @@
 
 #pragma mark - Methods
 
+- (ORBTagListItem *)tagItemAtIndex:(NSUInteger)tagIndex;
 - (void)reloadData;
 
 @end

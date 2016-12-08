@@ -7,11 +7,12 @@
 //
 
 #import "ORBTagList.h"
+#import "ORBTagListPrivate.h"
 
 #define kORBTagListDefaultItemHeight 30.0f
 #define kORBTagListDefaultSpaceBetweenItems 10.0f
 
-@interface ORBTagList () {
+@interface ORBTagList () <ORBTagListItemProtocol> {
     
 }
 
@@ -40,6 +41,15 @@
 
 #pragma mark - Data Control
 
+- (ORBTagListItem *)tagItemAtIndex:(NSUInteger)tagIndex {
+    if (!self.tagItems || tagIndex >= self.tagItems.count) {
+        return nil;
+    }
+    
+    ORBTagListItem *item = [self.tagItems objectAtIndex:tagIndex];
+    return item;
+}
+
 - (void)reloadData {
     NSAssert(self.dataSource, @"Warning: DataSource protocol must be implemented for %@ object", NSStringFromClass([self class]));
     
@@ -47,42 +57,49 @@
     [self.scrollView removeFromSuperview];
     
     /* Pull data from DataSource */
-    if ([self.dataSource respondsToSelector:@selector(numberOfItemsInTagList)]) {
+    if ([self.dataSource respondsToSelector:@selector(numberOfItemsInTagList:)]) {
         self.tagItems = [[NSMutableArray alloc] initWithCapacity:
-                         [self.dataSource numberOfItemsInTagList]];
+                         [self.dataSource numberOfItemsInTagList:self]];
     } else {
         self.tagItems = [[NSMutableArray alloc] initWithCapacity:0];
     }
     
-    if ([self.dataSource respondsToSelector:@selector(tagItemAtIndex:)]) {
-        for (NSUInteger index = 0; index < [self.dataSource numberOfItemsInTagList]; index++) {
-            [self.tagItems insertObject:[self.dataSource tagItemAtIndex:index] atIndex:index];
+    if ([self.dataSource respondsToSelector:@selector(tagList:tagItemAtIndex:)]) {
+        for (NSUInteger index = 0; index < [self.dataSource numberOfItemsInTagList:self]; index++) {
+            [self.tagItems insertObject:[self.dataSource tagList:self tagItemAtIndex:index] atIndex:index];
         }
     }
     
     CGFloat tagHeight;
-    if ([self.dataSource respondsToSelector:@selector(heightForAllItemsInTagList)]) {
-        tagHeight = [self.dataSource heightForAllItemsInTagList];
+    if ([self.dataSource respondsToSelector:@selector(heightForAllItemsInTagList:)]) {
+        tagHeight = [self.dataSource heightForAllItemsInTagList:self];
     } else {
         tagHeight = kORBTagListDefaultItemHeight;
     }
     
     CGFloat horizontalMargin;
-    if ([self.dataSource respondsToSelector:@selector(horizontalSpaceBetweenItemsInTagList)]) {
-        horizontalMargin = [self.dataSource horizontalSpaceBetweenItemsInTagList];
+    if ([self.dataSource respondsToSelector:@selector(horizontalSpaceBetweenItemsInTagList:)]) {
+        horizontalMargin = [self.dataSource horizontalSpaceBetweenItemsInTagList:self];
     } else {
         horizontalMargin = kORBTagListDefaultSpaceBetweenItems;
     }
     
     CGFloat verticalMargin;
-    if ([self.dataSource respondsToSelector:@selector(verticalSpaceBetweenItemsInTagList)]) {
-        verticalMargin = [self.dataSource verticalSpaceBetweenItemsInTagList];
+    if ([self.dataSource respondsToSelector:@selector(verticalSpaceBetweenItemsInTagList:)]) {
+        verticalMargin = [self.dataSource verticalSpaceBetweenItemsInTagList:self];
     } else {
         verticalMargin = kORBTagListDefaultSpaceBetweenItems;
     }
     
     /* Build view structure */
-    self.scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
+    if (!self.scrollView) {
+        self.scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
+    } else {
+        for (UIView *subview in self.scrollView.subviews) {
+            [subview removeFromSuperview];
+        }
+    }
+    
     self.dataContainer = [[UIView alloc]
                           initWithFrame:CGRectMake(_leftEdgeInset, 0,
                                                    self.scrollView.bounds.size.width - (_leftEdgeInset + _rightEdgeInset),
@@ -105,12 +122,13 @@
         }
         
         [item setFrame:CGRectMake(curX,
-                                   self.dataContainer.bounds.origin.y + verticalMargin +
+                                   self.dataContainer.bounds.origin.y +
                                    (numOfFilledTagLines * (verticalMargin + tagHeight))
                                    + verticalMargin,
                                    item.bounds.size.width,
                                    tagHeight)];
         
+        item.privateDelegate = self;
         [self.dataContainer addSubview:item];
         
         curX += item.bounds.size.width + horizontalMargin;
@@ -157,6 +175,39 @@
     
     [self.scrollView addSubview:self.dataContainer];
     [self.scrollView setContentSize:newSize];
+}
+
+#pragma mark - ORBTagListItemProtocol
+
+- (void)tagListItemTapped:(ORBTagListItem *)item {
+    if ([self.delegate respondsToSelector:@selector(tagList:itemTappedAtIndex:)]) {
+        [self.delegate tagList:self itemTappedAtIndex:[self.tagItems indexOfObject:item]];
+    }
+}
+
+- (void)tagListAccessoryButtonTapped:(ORBTagListItem *)item {
+    switch (item.accessoryView) {
+        case ORBTagListItemAccessoryViewRemoveItem:
+            if ([self.delegate
+                 respondsToSelector:@selector(tagList:requestedTagListItemRemovalAtIndex:)]) {
+                
+                [self.delegate tagList:self requestedTagListItemRemovalAtIndex:[self.tagItems indexOfObject:item]];
+            }
+            
+            break;
+            
+        case ORBTagListItemAccessoryViewCustom:
+            if ([self.delegate
+                 respondsToSelector:@selector(tagList:itemAccessoryButtonTappedAtIndex:)]) {
+                
+                [self.delegate tagList:self itemAccessoryButtonTappedAtIndex:[self.tagItems indexOfObject:item]];
+            }
+            
+            break;
+            
+        default:
+            break;
+    }
 }
 
 #pragma mark - Custom Assessors
