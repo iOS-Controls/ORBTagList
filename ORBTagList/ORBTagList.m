@@ -110,13 +110,71 @@
                                           self.dataContainer.bounds.size.width,
                                           (numOfFilledTagLines * (verticalMargin + tagHeight) + verticalMargin));
     
-    /* Scroll view ?? */
+    /* Layout Scroll View */
+    [self layoutScrollView];
+    [self addSubview:self.scrollView];
+}
+
+#pragma mark - UI Layout
+
+- (void)layoutScrollView {
     CGSize newSize = CGSizeMake(self.dataContainer.bounds.size.width,
                                 self.dataContainer.bounds.size.height);
-    [self.scrollView setContentSize:newSize];
-    [self.scrollView addSubview:self.dataContainer];
     
-    [self addSubview:self.scrollView];
+    if (_tagListHeaderView) {
+        newSize.height += _tagListHeaderView.bounds.size.height;
+        [self.scrollView addSubview:_tagListHeaderView];
+        
+        self.dataContainer.frame = CGRectMake(0, _tagListHeaderView.bounds.size.height,
+                                              self.dataContainer.bounds.size.width,
+                                              self.dataContainer.bounds.size.height);
+    } else {
+        self.dataContainer.frame = CGRectMake(0, 0,
+                                              self.dataContainer.bounds.size.width,
+                                              self.dataContainer.bounds.size.height);
+    }
+    
+    if (_tagListFooterView) {
+        newSize.height += _tagListFooterView.bounds.size.height;
+        
+        _tagListFooterView.frame = CGRectMake(0, newSize.height - _tagListFooterView.bounds.size.height,
+                                              _tagListFooterView.bounds.size.width,
+                                              _tagListFooterView.bounds.size.height);
+        [self.scrollView addSubview:_tagListFooterView];
+    }
+    
+    [self.scrollView addSubview:self.dataContainer];
+    [self.scrollView setContentSize:newSize];
+}
+
+#pragma mark - Custom Assessors
+
+- (void)setTagListHeaderView:(UIView *)tagListHeaderView {
+    if (tagListHeaderView && self.scrollView) {
+        tagListHeaderView.frame = CGRectMake(0, 0,
+                                              tagListHeaderView.bounds.size.width,
+                                              tagListHeaderView.bounds.size.height);
+    } else {
+        [tagListHeaderView removeFromSuperview];
+    }
+    
+    _tagListHeaderView = tagListHeaderView;
+    
+    [self layoutScrollView];
+}
+
+- (void)setTagListFooterView:(UIView *)tagListFooterView {
+    if (tagListFooterView && self.scrollView) {
+        tagListFooterView.frame = CGRectMake(0, 0,
+                                              tagListFooterView.bounds.size.width,
+                                              tagListFooterView.bounds.size.height);
+    } else {
+        [tagListFooterView removeFromSuperview];
+    }
+    
+    _tagListFooterView = tagListFooterView;
+    
+    [self layoutScrollView];
 }
 
 @end

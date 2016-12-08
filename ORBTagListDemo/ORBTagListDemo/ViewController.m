@@ -39,13 +39,23 @@
     
     /* Create */
     ORBTagList *tags = [[ORBTagList alloc]
-                        initWithFrame:CGRectMake(20, 20,
+                        initWithFrame:CGRectMake(20, 0,
                                                  self.view.bounds.size.width - 40,
-                                                 self.view.bounds.size.height - 40)];
+                                                 self.view.bounds.size.height)];
     tags.dataSource = self;
     tags.delegate = self;
     
+    /* Optionally customize */
+    tags.tagListHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,
+                                                                      tags.bounds.size.width,
+                                                                      20)];
+    
+    tags.tagListFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,
+                                                                      tags.bounds.size.width,
+                                                                      20)];
+    
     [self.view addSubview:tags];
+    
 }
 
 #pragma mark - ORBTagListDataSource
@@ -85,14 +95,14 @@
 - (CGFloat)heightForAllItemsInTagList {
     return 40;
 }
-//
-//- (CGFloat)horizontalSpaceBetweenItemsInTagList {
-//    return 20;
-//}
-//
-//- (CGFloat)verticalSpaceBetweenItemsInTagList {
-//    return 5;
-//}
+
+- (CGFloat)horizontalSpaceBetweenItemsInTagList {
+    return 10;
+}
+
+- (CGFloat)verticalSpaceBetweenItemsInTagList {
+    return 10;
+}
 
 #pragma mark - ORBTagListDelegate
 
@@ -123,7 +133,8 @@
         NSMutableString *randomString = [NSMutableString stringWithCapacity:randomLength];
         
         for (int j = 0; j < randomLength; j++) {
-            [randomString appendFormat: @"%C", [letters characterAtIndex: arc4random_uniform([letters length])]];
+            [randomString appendFormat: @"%C",
+             [letters characterAtIndex: arc4random_uniform((uint32_t)[letters length])]];
         }
         
         [tags addObject:randomString];

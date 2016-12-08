@@ -38,6 +38,9 @@
 @property (nonatomic, weak) id <ORBTagListDataSource> dataSource;
 @property (nonatomic, weak) id <ORBTagListDelegate> delegate;
 
+@property (nonatomic, strong) UIView *tagListHeaderView;
+@property (nonatomic, strong) UIView *tagListFooterView;
+
 #pragma mark - Methods
 
 - (void)reloadData;
