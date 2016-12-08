@@ -75,7 +75,10 @@
     
     /* Build view structure */
     self.scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
-    self.dataContainer = [[UIView alloc] initWithFrame:self.scrollView.bounds];
+    self.dataContainer = [[UIView alloc]
+                          initWithFrame:CGRectMake(_leftEdgeInset, 0,
+                                                   self.scrollView.bounds.size.width - (_leftEdgeInset + _rightEdgeInset),
+                                                   self.scrollView.bounds.size.height)];
     
     int numOfFilledTagLines = 0;
     CGFloat curX = self.dataContainer.bounds.origin.x;
@@ -89,7 +92,7 @@
         
         if (spaceToTrailingMargin - item.bounds.size.width < 0) {
             numOfFilledTagLines++;
-            curX = self.dataContainer.frame.origin.x;
+            curX = self.dataContainer.bounds.origin.x;
         }
         
         [item setFrame:CGRectMake(curX,
@@ -106,8 +109,8 @@
     
     numOfFilledTagLines++;
     
-    self.dataContainer.frame = CGRectMake(0, 0,
-                                          self.dataContainer.bounds.size.width,
+    self.dataContainer.frame = CGRectMake(_leftEdgeInset, 0,
+                                          self.dataContainer.frame.size.width,
                                           (numOfFilledTagLines * (verticalMargin + tagHeight) + verticalMargin));
     
     /* Layout Scroll View */
@@ -125,13 +128,13 @@
         newSize.height += _tagListHeaderView.bounds.size.height;
         [self.scrollView addSubview:_tagListHeaderView];
         
-        self.dataContainer.frame = CGRectMake(0, _tagListHeaderView.bounds.size.height,
-                                              self.dataContainer.bounds.size.width,
-                                              self.dataContainer.bounds.size.height);
+        self.dataContainer.frame = CGRectMake(self.dataContainer.frame.origin.x, _tagListHeaderView.bounds.size.height,
+                                              self.dataContainer.frame.size.width,
+                                              self.dataContainer.frame.size.height);
     } else {
-        self.dataContainer.frame = CGRectMake(0, 0,
-                                              self.dataContainer.bounds.size.width,
-                                              self.dataContainer.bounds.size.height);
+        self.dataContainer.frame = CGRectMake(self.dataContainer.frame.origin.x, 0,
+                                              self.dataContainer.frame.size.width,
+                                              self.dataContainer.frame.size.height);
     }
     
     if (_tagListFooterView) {
@@ -175,6 +178,16 @@
     _tagListFooterView = tagListFooterView;
     
     [self layoutScrollView];
+}
+
+- (void)setLeftEdgeInset:(CGFloat)leftEdgeInset {
+    _leftEdgeInset = leftEdgeInset;
+    [self reloadData];
+}
+
+- (void)setRightEdgeInset:(CGFloat)rightEdgeInset {
+    _rightEdgeInset = rightEdgeInset;
+    [self reloadData];
 }
 
 @end

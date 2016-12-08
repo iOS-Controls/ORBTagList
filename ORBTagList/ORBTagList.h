@@ -40,6 +40,8 @@
 
 @property (nonatomic, strong) UIView *tagListHeaderView;
 @property (nonatomic, strong) UIView *tagListFooterView;
+@property (nonatomic, assign) CGFloat leftEdgeInset;
+@property (nonatomic, assign) CGFloat rightEdgeInset;
 
 #pragma mark - Methods
 

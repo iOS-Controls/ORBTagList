@@ -39,9 +39,7 @@
     
     /* Create */
     ORBTagList *tags = [[ORBTagList alloc]
-                        initWithFrame:CGRectMake(20, 0,
-                                                 self.view.bounds.size.width - 40,
-                                                 self.view.bounds.size.height)];
+                        initWithFrame:self.view.bounds];
     tags.dataSource = self;
     tags.delegate = self;
     
@@ -49,13 +47,22 @@
     tags.tagListHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,
                                                                       tags.bounds.size.width,
                                                                       20)];
-    
     tags.tagListFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,
                                                                       tags.bounds.size.width,
                                                                       20)];
     
+    tags.leftEdgeInset = 20;
+    tags.rightEdgeInset = 20;
+    
     [self.view addSubview:tags];
     
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+        });
+    });
 }
 
 #pragma mark - ORBTagListDataSource
