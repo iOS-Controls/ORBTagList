@@ -138,7 +138,7 @@ Implement `ORBTagListDelegate` to handle UI events and user feedback.
 }
 ```
 
-## Classes and Protocols Reference
+## Classes Reference
 
 ### `ORBTagList` Class
 ```objective-c
