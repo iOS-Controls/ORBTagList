@@ -1,6 +1,6 @@
 # ORBTagList [![License: Zlib](https://img.shields.io/badge/License-Zlib-orange.svg)](https://opensource.org/licenses/Zlib) ![Version: 1.0](https://img.shields.io/badge/version-1.0-blue.svg)
 
-ORBTagList visually represents data in the form of tag list (cloud). It's ighly customizable and uses iOS-friendly protocols for data input and appearance control.
+ORBTagList visually represents data in the form of tag list (cloud). It's highly customizable and uses iOS-friendly protocols for data input and appearance control.
 
 ![demo](Screenshots/taglist.png) ![demo](Screenshots/taglist_demo.gif)
 
