@@ -147,22 +147,6 @@
     
     [self.view addSubview:_tags3];
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        
-        
-        
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            
-            
-            
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                
-
-                
-            });
-        });
-    });
-    
     /* Just a screen separators */
     UIView *hr = [[UIView alloc]
                   initWithFrame:CGRectMake(0, self.view.bounds.size.height / 2,
@@ -284,9 +268,7 @@
     if (tagList != _tags1) {
         return;
     }
-    
-    ORBTagListItem *item = [tagList tagItemAtIndex:tagItemIndex];
-    
+        
     if ([self.sampleCheckmarks2 valueForKey:[NSString stringWithFormat:@"%i", (int)tagItemIndex]]) {
         [self.sampleCheckmarks2
          removeObjectForKey:[NSString stringWithFormat:@"%i", (int)tagItemIndex]];
@@ -296,17 +278,6 @@
     }
     
     [tagList reloadData];
-    
-//    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Tag selected" message:[NSString stringWithFormat:@"%@", [self.sampleTags valueForKey:@"1"][tagItemIndex]] preferredStyle:UIAlertControllerStyleAlert];
-//    
-//    [alert addAction:[UIAlertAction actionWithTitle:@"Cool"
-//                                              style:UIAlertActionStyleDefault
-//                                            handler:^(UIAlertAction * _Nonnull action)
-//    {
-//        
-//    }]];
-//    
-//    [self presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)tagList:(ORBTagList *)tagList itemAccessoryButtonTappedAtIndex:(NSUInteger)tagItemIndex {

@@ -12,7 +12,7 @@
 #define kORBTagListDefaultItemHeight 30.0f
 #define kORBTagListDefaultSpaceBetweenItems 10.0f
 
-@interface ORBTagList () <ORBTagListItemProtocol> {
+@interface ORBTagList () <ORBTagListItemDelegate> {
     
 }
 

@@ -11,7 +11,12 @@
 
 @class ORBTagListItem;
 
-@protocol ORBTagListItemProtocol <NSObject>
+/**
+ \protocol ORBTagListItemDelegate
+ \brief Private protocol for ORBTagList and ORBTagListItem communication.
+ \discussion You can extend it for your needs but it's not supposed to be implemented elsewhere but in ORBTagList to get updates from ORBTagListItem.
+ */
+@protocol ORBTagListItemDelegate <NSObject>
 
 @required
 - (void)tagListItemTapped:(ORBTagListItem *)item;
@@ -19,9 +24,13 @@
 
 @end
 
+
+/**
+ \brief Private ORBTagListItem extension available only to ORBTagList related classes for intercommunication.
+ */
 @interface ORBTagListItem ()
 
-@property (nonatomic, weak) id <ORBTagListItemProtocol> privateDelegate;
+@property (nonatomic, weak) id <ORBTagListItemDelegate> privateDelegate;
 
 @end
 
