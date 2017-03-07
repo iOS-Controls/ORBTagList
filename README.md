@@ -255,5 +255,8 @@ Implement `ORBTagListDelegate` to handle UI events and user feedback.
 ## ToDo's
 + Optimize memory consumption for massive data;
 
+## Contributions
+Pull requests are welcome!
+
 ## License
 Distributed under the permissive zlib License
